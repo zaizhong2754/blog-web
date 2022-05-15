@@ -1,16 +1,15 @@
-import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
+import { useRoutes } from "react-router-dom";
+import routes from "@/routes";
 
-const App = () => (
-  <Routes>
-    <Route path="" element={<Navigate to="/home" />} />
-    <Route path="/home" element={<Home />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-);
+const App = () => {
+  //根据路由表生成对应的路由规则
+  const element = useRoutes(routes);
+  return (
+    <div>
+      {/* 注册路由 */}
+      {element}
+    </div>
+  );
+};
 
 export default App;
