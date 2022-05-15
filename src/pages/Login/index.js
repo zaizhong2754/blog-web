@@ -3,22 +3,28 @@ import { Card, Form, Input, Button, message } from "antd";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {login} from '@/store/actions';
+import { login } from "@/store/actions";
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formRef = useRef(null);
-  const [loadings, setLoadings] = useState(false);
-  const onFinish = ({ mobile, code }) => {
-    setLoadings(true);
-    const userInfo = mobile+'&'+code
-    // if (userInfo==='84f081a47efed5ef5d4caa159c9c6972') {
-      console.log(userInfo);
-      dispatch(login(userInfo))
-      // message.success("登入成功");
-      // navigate('/')
-    setLoadings(false);
+  const [loadings, setLoading] = useState(false);
+  const onFinish = async ({ mobile, code }) => {
+    setLoading(true);
+    const userInfo = mobile + "&" + code;
+    // 发送请求，进行登录
+    try {
+      await dispatch(login(userInfo));
+      setLoading(false);
+      message.success("登录成功", 1, () => {
+        navigate("/home");
+      });
+    } catch (e) {
+      message.error(e.response.data.message, 1, () => {
+        setLoading(false);
+      });
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
