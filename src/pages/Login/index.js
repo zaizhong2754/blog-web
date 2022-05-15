@@ -2,19 +2,22 @@ import { useState, useRef } from "react";
 import { Card, Form, Input, Button, message } from "antd";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {login} from '@/store/actions';
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const formRef = useRef(null);
   const [loadings, setLoadings] = useState(false);
   const onFinish = ({ mobile, code }) => {
     setLoadings(true);
-    if (mobile === "13911111111" && code === "246810") {
-      message.success("登入成功");
-      navigate('/')
-    } else {
-      message.error("用户名或密码错误");
-    }
+    const userInfo = mobile+'&'+code
+    // if (userInfo==='84f081a47efed5ef5d4caa159c9c6972') {
+      console.log(userInfo);
+      dispatch(login(userInfo))
+      // message.success("登入成功");
+      // navigate('/')
     setLoadings(false);
   };
 
